@@ -1,13 +1,20 @@
 from rest_framework import serializers
 from .models import Chat, Message, Audio, Video
 from .validates import check_path
-from .gemini import gemimi_answer
-class ChatSerializer(serializers.ModelSerializer):
+
+class ChatSerializer(serializers.ModelSerializer):  
+    user = serializers.ReadOnlyField(
+        source='user.username'
+    )
+    
     class Meta:
         model = Chat
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'user']
 
-
+    def validate(self, attrs):
+        user = self.context.get('request').user
+        attrs['user'] = user
+        return attrs
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -41,24 +48,45 @@ class ChatSerializer(serializers.ModelSerializer):
     
 
 class MessageSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(
+        source='user.username'
+    )
+    
     class Meta:
         model = Message
-        fields = ['id', 'chat', 'message', 'created_at']
+        fields = ['id', 'chat', 'message', 'created_at', 'user']
 
+    def validate(self, attrs):
+        user = self.context.get('request').user
+        attrs['user'] = user
+        return attrs
 
-    def create(self, validated_data):
-        # message = validated_data['message']
-        # answer = gemimi_answer(message)
-        return super().create(validated_data)
 
 class AudioSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(
+        source='user.username'
+    )
     class Meta:
         model = Audio
-        fields = ['id', 'chat', 'audio', 'created_at']
+        fields = ['id', 'chat', 'audio', 'created_at', 'user']
+
+    def validate(self, attrs):
+        user = self.context.get('request').user
+        attrs['user'] = user
+        return attrs
 
 
 class VideoSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(
+        source='user.username'
+    )
+    
     class Meta:
         model = Video
-        fields = ['id', 'chat', 'video', 'created_at']
+        fields = ['id', 'chat', 'video', 'created_at', 'user']
+
+    def validate(self, attrs):
+        user = self.context.get('request').user
+        attrs['user'] = user
+        return attrs
 

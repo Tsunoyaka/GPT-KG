@@ -1,8 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
 from .models import Chat, Message, Audio, Video
 from .serializers import ChatSerializer, MessageSerializer, AudioSerializer, VideoSerializer
 from .gemini import gemimi_answer
+
+User = get_user_model()
 
 class ChatViewSet(ModelViewSet):
     queryset = Chat.objects.all()
@@ -20,7 +23,8 @@ class MessageViewSet(ModelViewSet):
         answer = gemimi_answer(message)
         chat_id = request.data['chat']
         chat = Chat.objects.get(id=chat_id)
-        model = Message.objects.create(chat=chat, message=answer)
+        gemini = User.objects.get(email='gemini@gemini.com')
+        model = Message.objects.create(user=gemini, chat=chat, message=answer)
         model.save()
         return Response(answer)
 
