@@ -1,0 +1,39 @@
+from django.db import models
+from django.core.exceptions import ValidationError
+from .validates import validate_mp3, validate_mp4
+
+
+class Chat(models.Model):
+    title = models.CharField(verbose_name='Название', max_length=50)
+
+    def __str__(self) -> str:
+        return self.title
+
+class Message(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='chat_message')
+    message = models.CharField(verbose_name='Сообщение', max_length=4096)
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+
+
+    def clean(self):
+        if not self.message and not self.file:
+            raise ValidationError('Сообщение или файл должны быть заполнены.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean() 
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.message
+
+class Audio(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='audio_message')
+    audio = models.FileField(blank=True, null=True, upload_to='Audio', validators=[validate_mp3])
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+   
+
+class Video(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='video_message')
+    video = models.FileField(blank=True, null=True, upload_to='Video', validators=[validate_mp4])
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+
