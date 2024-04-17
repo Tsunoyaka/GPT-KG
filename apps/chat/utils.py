@@ -164,3 +164,23 @@ def audio_split_kg(audio_file):
     full_text = " ".join(results)
 
     return full_text
+
+def text_to_audio(text):
+    url = "http://tts.ulut.kg/api/tts"
+
+    payload = json.dumps({
+        "text": text,
+        "speaker_id": 2
+    })
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 0vHR4OJS3meHiO5LiEMSRE8mpr09GAwwvSOlkT9rdLSewPD52TkQTa74Ve1yfc5wwMkMcPwOgOPsxGUOcFcZqAk4SAdzKM5rg0XQbRSVv8akhAJrPgg2ESZb0egrycYu01TP'
+    }
+
+    response = requests.post(url, headers=headers, data=payload)
+
+    # Проверяем успешность запроса
+    if response.status_code == 200:
+        # Получаем содержимое ответа
+        audio_content = response.content
+        return audio_content

@@ -11,7 +11,8 @@ from .utils import (audio_to_text,
                     process_video_and_recognize_text,
                     translate_text,
                     audio_kg,
-                    audio_split_kg
+                    audio_split_kg,
+                    text_to_audio
                     )
 from .validates import is_youtube_link, is_string
 
@@ -78,18 +79,18 @@ class VideoViewSet(ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
-    def create(self, request, *args, **kwargs):
-        super().create(request, *args, **kwargs)
-        # video_name = request.data.get('video')
-        # uploaded_file = request.FILES.get('video')
+    # def create(self, request, *args, **kwargs):
+    #     super().create(request, *args, **kwargs)
+    #     # video_name = request.data.get('video')
+    #     # uploaded_file = request.FILES.get('video')
 
-        # video_path = r"C:\Users\user\Desktop\hackathon\media\Video\Привет_я_Русский_оккупант__Патриотическое_видео.mp4"
-        # print(video_name)
-        # # Обработка видео и распознавание текста
-        # recognized_text = process_video_and_recognize_text(video_path)
-        # print("Распознанный текст:", recognized_text)
-        return Response('none')
-
+    #     # video_path = r"C:\Users\user\Desktop\hackathon\media\Video\Привет_я_Русский_оккупант__Патриотическое_видео.mp4"
+    #     # print(video_name)
+    #     # # Обработка видео и распознавание текста
+    #     # recognized_text = process_video_and_recognize_text(video_path)
+    #     # print("Распознанный текст:", recognized_text)
+    #     return Response('none')
+    
 
 class AudioTextView(APIView):
     def post(self, request):
@@ -101,3 +102,18 @@ class AudioTextView(APIView):
         get_aud.text = message
         get_aud.save()
         return Response(message)
+    
+    
+class AudioToAudioView(APIView):
+    def post(self, request):
+        audio = request.data.get('audio')
+        audio_to_text = audio_kg(audio)
+        kg_ru = translate_text(text=audio_to_text, src_lang="ky", dest_lang="ru")
+        gemini = gemimi_answer(kg_ru)
+        audio_answer = text_to_audio(text=gemini)
+        content_type = 'audio/mpeg'
+        return Response(audio_answer, content_type=content_type)
+
+class LinkView(APIView):
+    def post(self, request):
+        return Response('Видео кайсы тилде?')
