@@ -18,3 +18,5 @@ pydub
 moviepy
 pytube
 deep-translator
+docx2pdf
+PyPDF2

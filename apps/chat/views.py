@@ -2,19 +2,29 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from .models import Chat, Message, Audio, Video
-from .serializers import ChatSerializer, MessageSerializer, AudioSerializer, VideoSerializer
+from .models import Chat, Message, Audio, Video, Docx
+from .serializers import (
+    ChatSerializer, 
+    MessageSerializer, 
+    AudioSerializer, 
+    VideoSerializer,
+    DocxSerializer
+    )
 from .gemini import gemimi_answer
-from .utils import (audio_to_text, 
-                    download_audio_as_wav, 
-                    split_and_recognize, 
-                    process_video_and_recognize_text,
-                    translate_text,
-                    audio_kg,
-                    audio_split_kg,
-                    text_to_audio
-                    )
+from .utils import (
+    audio_to_text, 
+    download_audio_as_wav, 
+    split_and_recognize, 
+    process_video_and_recognize_text,
+    translate_text,
+    audio_kg,
+    audio_split_kg,
+    text_to_audio
+    )
 from .validates import is_youtube_link, is_string
+from .docx import main
+import os
+from docx2pdf import convert
 
 
 User = get_user_model()
@@ -117,3 +127,16 @@ class AudioToAudioView(APIView):
 class LinkView(APIView):
     def post(self, request):
         return Response('Видео кайсы тилде?')
+    
+
+class DocxViewSet(ModelViewSet):
+    queryset = Docx.objects.all()
+    serializer_class = DocxSerializer
+    
+    def create(self, request, *args, **kwargs):
+        # docx = request.FILES.get('docx')
+        # docx_path = r"C:\Users\user\Desktop\hackathon\media\Docx"+ os.sep + docx.name
+
+        # if os.path.exists(docx_path):
+            # main(docx_file=docx_path, page_number=1)
+        return super().create(request, *args, **kwargs)

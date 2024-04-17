@@ -55,3 +55,15 @@ class Video(models.Model):
         on_delete=models.CASCADE,
         related_name='user_video'
         )
+
+
+class Docx(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='docx_message')
+    docx = models.FileField(upload_to='Docx',)
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    user = models.ForeignKey(
+        to='account.User',
+        on_delete=models.CASCADE,
+        related_name='user_docx'
+        )
+

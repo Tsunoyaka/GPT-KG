@@ -27,7 +27,7 @@ class RegistrationView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
-                'Спасибо за регистрацию! Ссылка для активации учетной записи отправлена Вам на почту.',
+                'Спасибо за регистрацию!',
                 status=status.HTTP_201_CREATED
             )
 
