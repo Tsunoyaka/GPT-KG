@@ -90,3 +90,7 @@ class VideoSerializer(serializers.ModelSerializer):
         attrs['user'] = user
         return attrs
 
+    def create(self, validated_data):
+        print(validated_data)
+        return super().create(validated_data)
+ 

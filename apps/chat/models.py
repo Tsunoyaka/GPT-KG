@@ -37,7 +37,8 @@ class Message(models.Model):
 
 class Audio(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='audio_message')
-    audio = models.FileField(blank=True, null=True, upload_to='Audio', validators=[validate_mp3])
+    audio = models.FileField(upload_to='Audio', validators=[validate_mp3])
+    text = models.CharField(verbose_name='Аудио в текст', max_length=4096, blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     user = models.ForeignKey(
         to='account.User',
@@ -47,7 +48,7 @@ class Audio(models.Model):
 
 class Video(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='video_message')
-    video = models.FileField(blank=True, null=True, upload_to='Video', validators=[validate_mp4])
+    video = models.FileField(upload_to='Video', validators=[validate_mp4])
     created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     user = models.ForeignKey(
         to='account.User',

@@ -12,4 +12,9 @@ redis
 peewee
 django-cors-headers
 django-cleanup
--q -U google-generativeai
+SpeechRecognition 
+pyaudio
+pydub
+moviepy
+pytube
+deep-translator

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ChatViewSet, MessageViewSet, AudioViewSet, VideoViewSet
+from .views import ChatViewSet, MessageViewSet, AudioViewSet, VideoViewSet, AudioTextView
 
 router = DefaultRouter()
 router.register(r'chats', ChatViewSet, basename='chat')
@@ -10,4 +10,6 @@ router.register(r'video', VideoViewSet, basename='video')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('audio-text/', AudioTextView.as_view()),
 ]
+
