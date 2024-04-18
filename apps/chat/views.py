@@ -129,18 +129,6 @@ class LinkView(APIView):
     def post(self, request):
         return Response('Видео кайсы тилде?')
     
-
-class DocxViewSet(ModelViewSet):
-    queryset = Docx.objects.all()
-    serializer_class = DocxSerializer
-    
-    def create(self, request, *args, **kwargs):
-        # docx = request.FILES.get('docx')
-        # docx_path = r"C:\Users\user\Desktop\hackathon\media\Docx"+ os.sep + docx.name
-
-        # if os.path.exists(docx_path):
-            # main(docx_file=docx_path, page_number=1)
-        return super().create(request, *args, **kwargs)
     
 class PhotoViewSet(ModelViewSet):
     queryset = Photo.objects.all()

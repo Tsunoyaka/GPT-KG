@@ -8,7 +8,6 @@ from .views import (
     AudioTextView, 
     AudioToAudioView,
     LinkView,
-    DocxViewSet
     )
 
 
@@ -17,7 +16,6 @@ router.register(r'chats', ChatViewSet, basename='chat')
 router.register(r'messages', MessageViewSet, basename='message')
 router.register(r'audio', AudioViewSet, basename='audio')
 router.register(r'video', VideoViewSet, basename='video')
-router.register(r'docx', DocxViewSet, basename='docx')
 
 urlpatterns = [
     path('', include(router.urls)),

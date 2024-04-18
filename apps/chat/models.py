@@ -77,5 +77,5 @@ class Photo(models.Model):
     user = models.ForeignKey(
         to='account.User',
         on_delete=models.CASCADE,
-        related_name='user_docx'
+        related_name='user_photo'
         )
