@@ -15,7 +15,7 @@ from .serializers import (
     SetRestoredPasswordSerializer,
     UsersSerializer
     )
-
+from apps.chat.models import Chat
 
 User = get_user_model()
 
@@ -94,3 +94,19 @@ class DeleteAccountView(APIView):
             status=status.HTTP_204_NO_CONTENT
         )
 
+class MyChats(APIView):
+    def post(self, request):
+        user = request.user
+        chats = Chat.objects.filter(user=user)
+        list_ = []
+        if chats.exists():
+            for chat in chats:
+                dict_ = {
+                    "id": chat.id,
+                    "title": chat.title,
+                    "user": chat.user.email
+                }
+                print(dict_)
+                list_.append(dict_)
+            return Response(list_)
+        return 'У данного пользователя нет чатов'

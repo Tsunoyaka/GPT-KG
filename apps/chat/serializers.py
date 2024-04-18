@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Chat, Message, Audio, Video, Docx
+from .models import Chat, Message, Audio, Video, Docx, Photo
 from .validates import check_path
 
 class ChatSerializer(serializers.ModelSerializer):  
@@ -102,6 +102,20 @@ class DocxSerializer(serializers.ModelSerializer):
     class Meta:
         model = Docx
         fields = ['id', 'chat', 'docx', 'created_at', 'user']
+
+    def validate(self, attrs):
+        user = self.context.get('request').user
+        attrs['user'] = user
+        return attrs
+    
+ 
+class PhotoSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(
+        source='user.username'
+    )
+    class Meta:
+        model = Docx
+        fields = ['id', 'chat', 'photo', 'created_at', 'user']
 
     def validate(self, attrs):
         user = self.context.get('request').user

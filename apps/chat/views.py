@@ -2,13 +2,14 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from .models import Chat, Message, Audio, Video, Docx
+from .models import Chat, Message, Audio, Video, Docx, Photo
 from .serializers import (
     ChatSerializer, 
     MessageSerializer, 
     AudioSerializer, 
     VideoSerializer,
-    DocxSerializer
+    DocxSerializer,
+    PhotoSerializer
     )
 from .gemini import gemimi_answer
 from .utils import (
@@ -124,6 +125,7 @@ class AudioToAudioView(APIView):
         content_type = 'audio/mpeg'
         return Response(audio_answer, content_type=content_type)
 
+
 class LinkView(APIView):
     def post(self, request):
         return Response('Видео кайсы тилде?')
@@ -139,4 +141,11 @@ class DocxViewSet(ModelViewSet):
 
         # if os.path.exists(docx_path):
             # main(docx_file=docx_path, page_number=1)
+        return super().create(request, *args, **kwargs)
+    
+class PhotoViewSet(ModelViewSet):
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+    
+    def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)

@@ -1,6 +1,14 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import ChangePasswordView, DeleteAccountView, RegistrationView, AccountActivationView, RestorePasswordView, SetRestoredPasswordView
+from .views import (
+    ChangePasswordView, 
+    DeleteAccountView, 
+    RegistrationView, 
+    AccountActivationView, 
+    RestorePasswordView, 
+    SetRestoredPasswordView,
+    MyChats
+    )
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,7 +26,8 @@ urlpatterns = [
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
     path('restore-password/',  RestorePasswordView.as_view(), name='restored_password'),
     path('set-restored-password/', SetRestoredPasswordView.as_view(), name='set_restored_password'),
-    path('delete-account/', DeleteAccountView.as_view(), name='delete-account'),
+    path('delete-account/', DeleteAccountView.as_view(), name='delete_account'),
+    path('my-chats/', MyChats.as_view(), name='my_chats')
 ]
 
 

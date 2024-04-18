@@ -14,6 +14,7 @@ class Chat(models.Model):
     def __str__(self) -> str:
         return self.title
 
+
 class Message(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='chat_message')
     message = models.CharField(verbose_name='Сообщение', max_length=4096)
@@ -35,6 +36,7 @@ class Message(models.Model):
     def __str__(self) -> str:
         return self.message
 
+
 class Audio(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='audio_message')
     audio = models.FileField(upload_to='Audio', validators=[validate_mp3])
@@ -45,6 +47,7 @@ class Audio(models.Model):
         on_delete=models.CASCADE,
         related_name='user_audio'
         )   
+
 
 class Video(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='video_message')
@@ -59,7 +62,7 @@ class Video(models.Model):
 
 class Docx(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='docx_message')
-    docx = models.FileField(upload_to='Docx',)
+    docx = models.FileField(upload_to='Docx')
     created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     user = models.ForeignKey(
         to='account.User',
@@ -67,3 +70,12 @@ class Docx(models.Model):
         related_name='user_docx'
         )
 
+class Photo(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE, related_name='photo_message')
+    photo = models.FileField(upload_to='Photo')
+    created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    user = models.ForeignKey(
+        to='account.User',
+        on_delete=models.CASCADE,
+        related_name='user_docx'
+        )
