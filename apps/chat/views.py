@@ -23,7 +23,6 @@ from .utils import (
     text_to_audio
     )
 from .validates import is_youtube_link, is_string
-from .docx import main
 import os
 from docx2pdf import convert
 
